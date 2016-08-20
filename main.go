@@ -2,8 +2,16 @@ package main
 
 import (
 	"net/http"
+	"os"
 )
 
 func main() {
-	panic(http.ListenAndServe("127.0.0.1:1234", http.FileServer(http.Dir("./"))))
+	listen := "127.0.0.1:1234"
+	if len(os.Args) > 1 {
+		listen = os.Args[1]
+	}
+
+	handler := http.FileServer(http.Dir("./"))
+
+	panic(http.ListenAndServe(listen, handler))
 }
