@@ -13,5 +13,6 @@ func main() {
 
 	handler := http.FileServer(http.Dir("./"))
 
+	println("start serving " + listen)
 	panic(http.ListenAndServe(listen, handler))
 }
