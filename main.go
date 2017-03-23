@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
+	"os/exec"
 )
 
 func main() {
@@ -13,6 +15,15 @@ func main() {
 
 	handler := http.FileServer(http.Dir("./"))
 
-	println("start serving " + listen)
+	go openBrowser("http://" + listen)
+
+	fmt.Printf("start serving http://%v\n", listen)
 	panic(http.ListenAndServe(listen, handler))
+}
+
+func openBrowser(url string) {
+	err := exec.Command("x-www-browser", url).Run()
+	if err != nil {
+		fmt.Printf("error starting browser: %v\n", err)
+	}
 }
