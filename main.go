@@ -13,7 +13,11 @@ func main() {
 		listen = os.Args[1]
 	}
 
-	handler := http.FileServer(http.Dir("./"))
+	fileServer := http.FileServer(http.Dir("./"))
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache")
+		fileServer.ServeHTTP(w, r)
+	})
 
 	go openBrowser("http://" + listen)
 
